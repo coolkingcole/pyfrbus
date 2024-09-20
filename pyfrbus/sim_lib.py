@@ -1,16 +1,17 @@
-from pandas import DataFrame
+import matplotlib
+matplotlib.use('Agg')  # Set non-interactive backend
+
+from pandas import DataFrame, PeriodIndex, Series
 import pandas as pd
 import matplotlib.pyplot as plt
-from math import ceil
-
-# Imports from this package
-import pyfrbus.lexing as lexing
 
 # For mypy typing
 from typing import List, Optional, Union
-from pandas import PeriodIndex, Series
-from pyfrbus.frbus import Frbus
 
+# Imports from this package
+import pyfrbus.lexing as lexing
+from pyfrbus.frbus import Frbus
+from math import ceil
 
 def _single_plot(axes, r, c, periods: PeriodIndex, base, sim):
     axes[r, c].plot(range(len(periods)), base, color="C0", label="Baseline")
@@ -85,7 +86,8 @@ def sim_plot(baseline: DataFrame, sim: DataFrame, start: str, end: str) -> None:
         sim.loc[plot_period, "rff"],
     )
     fig.tight_layout()
-    plt.show()
+    fig.savefig('simplot_output.png')
+    #plt.show()
 
 
 def stochsim_plot(
@@ -175,7 +177,8 @@ def stochsim_plot(
         rff_hi90[plot_period],
     )
     fig.tight_layout()
-    plt.show()
+    #plt.show()
+    fig.savefig('stochsim_output.png')
 
 
 def _take_quantile(
@@ -200,7 +203,8 @@ def simple_plot(
             )
         else:
             data1.loc[start:end, seriesname].plot(color="C0")  # type: ignore
-        plt.show()
+        #plt.show()
+        fig.savefig('simple_output.png')
     else:
         for s in seriesname:
             if data2 is not None:
@@ -211,7 +215,8 @@ def simple_plot(
                 )
             else:
                 data1.loc[start:end, s].plot(color="C0")  # type: ignore
-            plt.show()
+            #plt.show()
+            fig.savefig('simple_output.png')
 
 
 # Allow users to view model equations as currently loaded
