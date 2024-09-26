@@ -18,7 +18,6 @@ RUN apt-get update && apt-get install -y \
     libopenblas-dev \
     pkg-config \
     cmake \
-    x11-apps \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory inside the container
@@ -26,6 +25,9 @@ WORKDIR /app
 
 # Copy the current directory's contents into /app
 COPY . /app
+
+# disable SSL :(
+RUN conda config --set ssl_verify no
 
 # Create the Conda environment with Python 3.10
 RUN conda create -n $CONDA_ENV_NAME python=3.10 -y
